@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1073695172828",
+    "project_id": "presence-flutter-c2d64",
+    "storage_bucket": "presence-flutter-c2d64.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1073695172828:android:a76049239065d6da472c19",
+        "android_client_info": {
+          "package_name": "com.presence.presence"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHerJVJdPIRf28JMLDbrO0WN9lWlLS6xM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
