@@ -14,7 +14,7 @@ void main() async {
   runApp(
     GetMaterialApp(
       title: "Application",
-      initialRoute: AppPages.initial,
+      initialRoute: Routes.login,
       getPages: AppPages.routes,
     ),
   );

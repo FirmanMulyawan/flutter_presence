@@ -18,7 +18,7 @@ class AddPegawaiController extends GetxController {
       try {
         UserCredential credential = await auth.createUserWithEmailAndPassword(
           email: emailC.text,
-          password: "qwerty@123",
+          password: "password",
         );
 
         if (credential.user?.uid != null) {
@@ -30,12 +30,27 @@ class AddPegawaiController extends GetxController {
             "uid": uid,
             "createdAt": DateTime.now().toIso8601String()
           });
+
+          await credential.user?.sendEmailVerification();
+
+          Get.defaultDialog(
+              title: "Success add Employe",
+              middleText: "kamu berhasil menambahkan employee",
+              contentPadding: EdgeInsets.all(20),
+              actions: [
+                ElevatedButton(
+                    onPressed: () {
+                      Get.back();
+                      Get.back();
+                    },
+                    child: Text("Success"))
+              ]);
         }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           Get.snackbar("Error", "Password terlalu singkat");
         } else if (e.code == 'email-already-in-use') {
-          Get.snackbar("Error", "employee sudah ada");
+          Get.snackbar("Error", "Email telah digunakan");
         }
       } catch (e) {
         Get.snackbar("Error", e.toString());

@@ -17,23 +17,38 @@ class AddPegawaiView extends GetView<AddPegawaiController> {
         padding: EdgeInsets.all(20),
         children: [
           TextField(
+            autocorrect: false,
             controller: controller.nipC,
             keyboardType: TextInputType.number,
             maxLength: 4,
-            decoration:
-                InputDecoration(labelText: "NIP", border: OutlineInputBorder()),
+            decoration: InputDecoration(
+                labelText: "NIP",
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0))),
           ),
           SizedBox(height: 20),
           TextField(
+            autocorrect: false,
             controller: controller.nameC,
             decoration: InputDecoration(
-                labelText: "Name", border: OutlineInputBorder()),
+                labelText: "Name",
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0))),
           ),
           SizedBox(height: 20),
           TextField(
+            autocorrect: false,
             controller: controller.emailC,
             decoration: InputDecoration(
-                labelText: "Email", border: OutlineInputBorder()),
+                labelText: "Email",
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0))),
           ),
           SizedBox(height: 30),
           ElevatedButton(
