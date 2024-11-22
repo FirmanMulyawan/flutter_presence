@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,6 +24,13 @@ class HomeView extends GetView<HomeController> {
           'HomeView is working',
           style: TextStyle(fontSize: 20),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await FirebaseAuth.instance.signOut();
+          Get.offAllNamed(Routes.login);
+        },
+        child: Icon(Icons.logout),
       ),
     );
   }
