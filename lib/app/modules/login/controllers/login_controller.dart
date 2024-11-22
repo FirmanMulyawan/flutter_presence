@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:presence/app/routes/app_pages.dart';
+import '../../../routes/app_pages.dart';
 
 class LoginController extends GetxController {
   TextEditingController emailC = TextEditingController();
@@ -9,19 +9,22 @@ class LoginController extends GetxController {
 
   FirebaseAuth auth = FirebaseAuth.instance;
   var isObscure = true.obs;
+  RxBool isLoading = false.obs;
 
   void toggleObscure() {
     isObscure.value = !isObscure.value;
   }
 
-  void login() async {
+  Future<void> login() async {
     if (emailC.text.isNotEmpty && passwordC.text.isNotEmpty) {
+      isLoading.value = true;
       try {
         UserCredential userCredential = await auth.signInWithEmailAndPassword(
             email: emailC.text, password: passwordC.text);
 
         if (userCredential.user != null) {
           if (userCredential.user?.emailVerified == true) {
+            isLoading.value = false;
             if (passwordC.text == "password") {
               Get.offAllNamed(Routes.newPassword);
             } else {
@@ -34,14 +37,20 @@ class LoginController extends GetxController {
                 contentPadding: EdgeInsets.all(20),
                 actions: [
                   OutlinedButton(
-                      onPressed: () => Get.back(), child: Text("Cancel")),
+                      onPressed: () {
+                        isLoading.value = false;
+                        Get.back();
+                      },
+                      child: Text("Cancel")),
                   ElevatedButton(
                       onPressed: () async {
                         try {
                           await userCredential.user?.sendEmailVerification();
+                          isLoading.value = false;
                           Get.back();
                           Get.snackbar("Success", "kirim email verification");
                         } catch (e) {
+                          isLoading.value = false;
                           Get.snackbar(
                               "Error", "Tidak dapat mengirim email verifikasi");
                         }
@@ -50,13 +59,16 @@ class LoginController extends GetxController {
                 ]);
           }
         }
+        isLoading.value = false;
       } on FirebaseAuthException catch (e) {
+        isLoading.value = false;
         if (e.code == 'user-not-found') {
           Get.snackbar("Error", "User Not Found");
         } else if (e.code == 'wrong-password') {
           Get.snackbar("Error", "Wrong Password");
         }
       } catch (e) {
+        isLoading.value = false;
         Get.snackbar("Error", "error");
       }
     } else {

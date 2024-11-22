@@ -51,11 +51,19 @@ class AddPegawaiView extends GetView<AddPegawaiController> {
                     borderRadius: BorderRadius.circular(10.0))),
           ),
           SizedBox(height: 30),
-          ElevatedButton(
-              onPressed: () {
-                controller.addEmployee();
+          Obx(() => ElevatedButton(
+              onPressed: () async {
+                if (controller.isLoading.isFalse) {
+                  await controller.addEmployee();
+                }
               },
-              child: Text("Add Employee"))
+              child: controller.isLoading.isFalse
+                  ? Text("Add Employee")
+                  : const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(),
+                    )))
         ],
       ),
     );

@@ -48,11 +48,19 @@ class LoginView extends GetView<LoginController> {
                   )),
             )),
         SizedBox(height: 30),
-        ElevatedButton(
-            onPressed: () {
-              controller.login();
+        Obx(() => ElevatedButton(
+            onPressed: () async {
+              if (controller.isLoading.isFalse) {
+                await controller.login();
+              }
             },
-            child: Text("Login")),
+            child: controller.isLoading.isFalse
+                ? Text("Login")
+                : const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(),
+                  ))),
         TextButton(
             onPressed: () => Get.toNamed(Routes.newPassword),
             child: Text("Forgot Password"))

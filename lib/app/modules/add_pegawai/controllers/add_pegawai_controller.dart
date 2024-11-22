@@ -13,9 +13,13 @@ class AddPegawaiController extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   var isObscure = true.obs;
+  RxBool isLoading = false.obs;
+  RxBool isLoadingAddEmployee = false.obs;
 
   Future<void> proccessAddEmploye() async {
     if (passwordAdminC.text.isNotEmpty) {
+      isLoadingAddEmployee.value = true;
+
       try {
         String emailAdmin = auth.currentUser?.email ?? '';
 
@@ -44,11 +48,13 @@ class AddPegawaiController extends GetxController {
           await auth.signInWithEmailAndPassword(
               email: emailAdmin, password: passwordAdminC.text);
 
+          isLoadingAddEmployee.value = false;
           Get.back();
           Get.back();
           Get.snackbar("Success", "Success Add Employee");
         }
       } on FirebaseAuthException catch (e) {
+        isLoadingAddEmployee.value = false;
         if (e.code == 'weak-password') {
           Get.snackbar("Error", "Password terlalu singkat");
         } else if (e.code == 'email-already-in-use') {
@@ -59,17 +65,20 @@ class AddPegawaiController extends GetxController {
           Get.snackbar("Error", e.code);
         }
       } catch (e) {
+        isLoadingAddEmployee.value = false;
         Get.snackbar("Error", e.toString());
       }
     } else {
+      isObscure.value = false;
       Get.snackbar("Error", "Password Wajib di isi");
     }
   }
 
-  void addEmployee() async {
+  Future<void> addEmployee() async {
     if (nameC.text.isNotEmpty &&
         nipC.text.isNotEmpty &&
         emailC.text.isNotEmpty) {
+      isObscure.value = true;
       Get.defaultDialog(
         title: "Admin validation",
         contentPadding: const EdgeInsets.all(20.0),
@@ -104,12 +113,25 @@ class AddPegawaiController extends GetxController {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 OutlinedButton(
-                    onPressed: () => Get.back(), child: Text('Cancel')),
-                OutlinedButton(
-                    onPressed: () async {
-                      await proccessAddEmploye();
+                    onPressed: () {
+                      isObscure.value = false;
+                      Get.back();
                     },
-                    child: Text('Add Employee'))
+                    child: Text('Cancel')),
+                Obx(() => ElevatedButton(
+                    onPressed: () async {
+                      if (isLoadingAddEmployee.isFalse) {
+                        await proccessAddEmploye();
+                      }
+                      isObscure.value = false;
+                    },
+                    child: isLoadingAddEmployee.isFalse
+                        ? Text('Add Employee')
+                        : SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(),
+                          )))
               ],
             )
           ],
