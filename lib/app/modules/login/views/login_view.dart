@@ -62,7 +62,7 @@ class LoginView extends GetView<LoginController> {
                     child: CircularProgressIndicator(),
                   ))),
         TextButton(
-            onPressed: () => Get.toNamed(Routes.newPassword),
+            onPressed: () => Get.toNamed(Routes.forgotPassword),
             child: Text("Forgot Password"))
       ]),
     );
