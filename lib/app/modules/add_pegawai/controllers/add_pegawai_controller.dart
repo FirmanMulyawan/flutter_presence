@@ -39,6 +39,7 @@ class AddPegawaiController extends GetxController {
             "name": nameC.text,
             "email": emailC.text,
             "uid": uid,
+            "role": "employee",
             "createdAt": DateTime.now().toIso8601String()
           });
 
