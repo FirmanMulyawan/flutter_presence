@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../component/config/app_const.dart';
 import '../../../routes/app_pages.dart';
 
 class LoginController extends GetxController {
@@ -25,7 +26,7 @@ class LoginController extends GetxController {
         if (userCredential.user != null) {
           if (userCredential.user?.emailVerified == true) {
             isLoading.value = false;
-            if (passwordC.text == "password") {
+            if (passwordC.text == AppConst.defaultPassword) {
               Get.offAllNamed(Routes.newPassword);
             } else {
               Get.offAllNamed(Routes.home);

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../component/config/app_const.dart';
 import '../../../routes/app_pages.dart';
 
 class NewPasswordController extends GetxController {
@@ -16,7 +17,7 @@ class NewPasswordController extends GetxController {
 
   void changePassword() async {
     if (passwordC.text.isNotEmpty) {
-      if (passwordC.text != "password") {
+      if (passwordC.text != AppConst.defaultPassword) {
         try {
           String email = auth.currentUser!.email!;
 

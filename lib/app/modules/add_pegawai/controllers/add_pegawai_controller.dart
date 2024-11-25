@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../../component/config/app_const.dart';
+
 class AddPegawaiController extends GetxController {
   TextEditingController nameC = TextEditingController();
   TextEditingController nipC = TextEditingController();
@@ -29,7 +31,7 @@ class AddPegawaiController extends GetxController {
         UserCredential employeeCredential =
             await auth.createUserWithEmailAndPassword(
           email: emailC.text,
-          password: "password",
+          password: AppConst.defaultPassword,
         );
 
         if (employeeCredential.user?.uid != null) {
@@ -39,7 +41,7 @@ class AddPegawaiController extends GetxController {
             "name": nameC.text,
             "email": emailC.text,
             "uid": uid,
-            "role": "employee",
+            "role": AppConst.defaultRole,
             "createdAt": DateTime.now().toIso8601String()
           });
 

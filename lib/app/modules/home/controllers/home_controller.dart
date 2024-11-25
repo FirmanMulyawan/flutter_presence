@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
+import '../../../component/config/app_const.dart';
+
 class HomeController extends GetxController {
   RxBool isLoading = false.obs;
 
@@ -12,6 +14,6 @@ class HomeController extends GetxController {
   Stream<DocumentSnapshot<Map<String, dynamic>>> streamRole() async* {
     String uid = auth.currentUser?.uid ?? '';
 
-    yield* firestore.collection("employee").doc(uid).snapshots();
+    yield* firestore.collection(AppConst.defaultRole).doc(uid).snapshots();
   }
 }
