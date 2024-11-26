@@ -36,7 +36,7 @@ class AddPegawaiController extends GetxController {
 
         if (employeeCredential.user?.uid != null) {
           String? uid = employeeCredential.user?.uid;
-          await firestore.collection('employee').doc(uid).set({
+          await firestore.collection(AppConst.defaultRole).doc(uid).set({
             "nip": nipC.text,
             "name": nameC.text,
             "email": emailC.text,
