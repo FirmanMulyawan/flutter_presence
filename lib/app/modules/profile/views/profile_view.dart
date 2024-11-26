@@ -19,7 +19,7 @@ class ProfileView extends GetView<ProfileController> {
           stream: controller.streamUser(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              Center(
+              return Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -39,11 +39,7 @@ class ProfileView extends GetView<ProfileController> {
                             height: 100,
                             width: 100,
                             child: Image.network(
-                              "https://ui-avatars.com/api/?name=${user['name']}",
-                              loadingBuilder: (context, child, progress) {
-                                if (progress == null) return child;
-                                return CircularProgressIndicator();
-                              },
+                              "https://ui-avatars.com/api/?name=${user['name'].toString()}",
                               errorBuilder: (context, error, stackTrace) {
                                 return Icon(Icons.error);
                               },
