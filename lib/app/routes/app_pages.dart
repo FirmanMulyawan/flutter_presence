@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/add_pegawai/bindings/add_pegawai_binding.dart';
 import '../modules/add_pegawai/views/add_pegawai_view.dart';
+import '../modules/change_password/bindings/change_password_binding.dart';
+import '../modules/change_password/views/change_password_view.dart';
 import '../modules/forgot_password/bindings/forgot_password_binding.dart';
 import '../modules/forgot_password/views/forgot_password_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -12,6 +14,8 @@ import '../modules/new_password/bindings/new_password_binding.dart';
 import '../modules/new_password/views/new_password_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
+import '../modules/update_profile/bindings/update_profile_binding.dart';
+import '../modules/update_profile/views/update_profile_view.dart';
 
 part 'app_routes.dart';
 
@@ -50,6 +54,16 @@ class AppPages {
       name: _Paths.profile,
       page: () => const ProfileView(),
       binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.updateProfile,
+      page: () => UpdateProfileView(),
+      binding: UpdateProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.changePassword,
+      page: () => const ChangePasswordView(),
+      binding: ChangePasswordBinding(),
     ),
   ];
 }

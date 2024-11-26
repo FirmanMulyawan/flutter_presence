@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
@@ -25,22 +26,31 @@ class ProfileView extends GetView<ProfileController> {
 
             if (snapshot.hasData) {
               Map<String, dynamic> user = snapshot.data?.data() ?? {};
+
               return ListView(
                 padding: EdgeInsets.all(20),
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ClipOval(
-                        child: SizedBox(
-                          height: 100,
-                          width: 100,
-                          child: Image.network(
-                            "https://ui-avatars.com/api/?name=${user['name']}",
-                            fit: BoxFit.cover,
+                      if (user['name'].toString().isNotEmpty)
+                        ClipOval(
+                          child: SizedBox(
+                            height: 100,
+                            width: 100,
+                            child: Image.network(
+                              "https://ui-avatars.com/api/?name=${user['name']}",
+                              loadingBuilder: (context, child, progress) {
+                                if (progress == null) return child;
+                                return CircularProgressIndicator();
+                              },
+                              errorBuilder: (context, error, stackTrace) {
+                                return Icon(Icons.error);
+                              },
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                   Gap(20),
@@ -59,18 +69,19 @@ class ProfileView extends GetView<ProfileController> {
                   ListTile(
                     leading: Icon(Icons.person),
                     title: Text("Update Profile"),
-                    onTap: () {},
+                    onTap: () =>
+                        Get.toNamed(Routes.updateProfile, arguments: user),
                   ),
                   ListTile(
                     leading: Icon(Icons.vpn_key),
                     title: Text("Change Password"),
-                    onTap: () {},
+                    onTap: () => Get.toNamed(Routes.changePassword),
                   ),
                   if (user["role"] == "admin")
                     ListTile(
                       leading: Icon(Icons.person_add),
                       title: Text("Add Employee"),
-                      onTap: () {},
+                      onTap: () => Get.toNamed(Routes.addPegawai),
                     ),
                   ListTile(
                     leading: Icon(Icons.logout),
