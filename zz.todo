@@ -1,0 +1,19 @@
+video = 17
+default password = password
+default role = "employee"
+
+user = firman@radyalabs.com (admin)
+password = qwerty@123
+
+user2 = firmanmulyawan491@gmail.com (employee)
+password = qwerty@123
+
+# get cli
+get create page:profile
+get install "image_picker"
+get create controller:page_index
+
+
+# todo
+- add general value
+- skeletonizer

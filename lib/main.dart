@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import 'app/controllers/page_index_controller.dart';
 import 'app/routes/app_pages.dart';
 import 'firebase_options.dart';
 
@@ -17,6 +18,8 @@ void main() async {
     FlutterError.dumpErrorToConsole(details);
     runApp(ErrorWidgetClass(details));
   };
+
+  Get.put(PageIndexController(), permanent: true);
 
   runApp(
     StreamBuilder<User?>(
