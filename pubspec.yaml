@@ -17,6 +17,7 @@ dependencies:
   flutter:
     sdk: flutter
   gap: ^3.0.1
+  geocoding: ^3.0.0
   geolocator: ^13.0.2
   get: ^4.6.6
   image_picker: ^1.1.2

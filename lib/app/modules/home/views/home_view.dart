@@ -68,9 +68,15 @@ class HomeView extends GetView<HomeController> {
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
-                            Text(user["position"] != null
-                                ? "${user["position"]}"
-                                : "Location not found"),
+                            SizedBox(
+                              width: 250,
+                              child: Text(
+                                user["address"] != null
+                                    ? "${user["address"]}"
+                                    : "Location not found",
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
                           ],
                         )
                       ],
