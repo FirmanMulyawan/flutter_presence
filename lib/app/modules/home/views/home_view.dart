@@ -68,7 +68,9 @@ class HomeView extends GetView<HomeController> {
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
-                            Text("Location not found"),
+                            Text(user["position"] != null
+                                ? "${user["position"]}"
+                                : "Location not found"),
                           ],
                         )
                       ],
