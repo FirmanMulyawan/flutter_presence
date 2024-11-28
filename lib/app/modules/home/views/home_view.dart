@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../controllers/page_index_controller.dart';
+import '../../../routes/app_pages.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -143,7 +144,9 @@ class HomeView extends GetView<HomeController> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),
-                        TextButton(onPressed: () {}, child: Text("see more")),
+                        TextButton(
+                            onPressed: () => Get.toNamed(Routes.allPresensi),
+                            child: Text("see more")),
                       ],
                     ),
                     Gap(10),
@@ -152,39 +155,54 @@ class HomeView extends GetView<HomeController> {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: 5,
                       itemBuilder: (context, index) {
-                        return Container(
-                          margin: EdgeInsets.only(bottom: 20),
-                          padding: EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(20)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "masuk",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    DateFormat.yMMMEd().format(DateTime.now()),
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ],
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: Material(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(20),
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(20),
+                              onTap: () {
+                                Get.toNamed(Routes.detailPresensi);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "masuk",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          DateFormat.yMMMEd()
+                                              .format(DateTime.now()),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    Text(DateFormat.jms()
+                                        .format(DateTime.now())),
+                                    Gap(10),
+                                    Text(
+                                      "keluar",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(DateFormat.jms()
+                                        .format(DateTime.now())),
+                                  ],
+                                ),
                               ),
-                              Text(DateFormat.jms().format(DateTime.now())),
-                              Gap(10),
-                              Text(
-                                "keluar",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(DateFormat.jms().format(DateTime.now())),
-                            ],
+                            ),
                           ),
                         );
                       },
@@ -198,7 +216,7 @@ class HomeView extends GetView<HomeController> {
               }
             }),
         bottomNavigationBar: ConvexAppBar(
-          // style: TabStyle.fixedCircle,
+          style: TabStyle.fixedCircle,
           items: [
             TabItem(icon: Icons.home, title: 'Home'),
             TabItem(icon: Icons.fingerprint, title: 'Add'),

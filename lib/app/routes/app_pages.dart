@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/add_pegawai/bindings/add_pegawai_binding.dart';
 import '../modules/add_pegawai/views/add_pegawai_view.dart';
+import '../modules/all_presensi/bindings/all_presensi_binding.dart';
+import '../modules/all_presensi/views/all_presensi_view.dart';
 import '../modules/change_password/bindings/change_password_binding.dart';
 import '../modules/change_password/views/change_password_view.dart';
 import '../modules/detail_presensi/bindings/detail_presensi_binding.dart';
@@ -71,6 +73,11 @@ class AppPages {
       name: _Paths.detailPresensi,
       page: () => const DetailPresensiView(),
       binding: DetailPresensiBinding(),
+    ),
+    GetPage(
+      name: _Paths.allPresensi,
+      page: () => const AllPresensiView(),
+      binding: AllPresensiBinding(),
     ),
   ];
 }
