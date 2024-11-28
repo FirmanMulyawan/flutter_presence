@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
-import 'package:presence/app/component/config/app_const.dart';
+import 'package:intl/intl.dart';
+import '../component/config/app_const.dart';
 
 import '../routes/app_pages.dart';
 
@@ -31,7 +32,10 @@ class PageIndexController extends GetxController {
           String address =
               "${placemarks[0].name}, ${placemarks[0].subLocality}, ${placemarks[0].locality}";
           await updatePosition(position, address);
-          Get.snackbar(dataResponse["message"], address);
+
+          // presensi
+          await presensi(position, address);
+          Get.snackbar("Berhasil", "Kamu telah mengisi daftar hadir");
         } else {
           Get.snackbar("Error", dataResponse["message"]);
         }
@@ -41,6 +45,35 @@ class PageIndexController extends GetxController {
         break;
       default:
         Get.offAllNamed(Routes.home);
+    }
+  }
+
+  Future<void> presensi(Position position, String address) async {
+    String uid = auth.currentUser?.uid ?? '';
+    CollectionReference<Map<String, dynamic>> colPresence = firestore
+        .collection(AppConst.defaultRole)
+        .doc(uid)
+        .collection(AppConst.collectionPresence);
+
+    QuerySnapshot<Map<String, dynamic>> snapPresence = await colPresence.get();
+
+    DateTime now = DateTime.now();
+    String todayDocID = DateFormat.yMd().format(now).replaceAll("/", "-");
+
+    if (snapPresence.docs.isEmpty) {
+      // belum pernah absen & set absen masuk
+      await colPresence.doc(todayDocID).set({
+        "date": now.toIso8601String(),
+        "masuk": {
+          "date": now.toIso8601String(),
+          "lat": position.latitude,
+          "long": position.longitude,
+          "address": address,
+          "status": "Di dalam area"
+        }
+      });
+    } else {
+      // sudah pernah absen -> cek hari ini sudah absen masuk / keluar ?
     }
   }
 
