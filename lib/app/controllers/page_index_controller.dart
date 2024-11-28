@@ -74,6 +74,40 @@ class PageIndexController extends GetxController {
       });
     } else {
       // sudah pernah absen -> cek hari ini sudah absen masuk / keluar ?
+      DocumentSnapshot<Map<String, dynamic>> todayDoc =
+          await colPresence.doc(todayDocID).get();
+      if (todayDoc.exists) {
+        // tinggal absen keluar atau sudah absen masuk & keluar
+        Map<String, dynamic>? dataPresenceToday = todayDoc.data();
+        if (dataPresenceToday?["keluar"] != null) {
+          // sudah absen masuk & keluar
+          Get.snackbar("Sukses",
+              "Kamu telah absen masuk & keluar dan tidak dapat masuk & keluar");
+        } else {
+          // absen keluar
+          await colPresence.doc(todayDocID).update({
+            "keluar": {
+              "date": now.toIso8601String(),
+              "lat": position.latitude,
+              "long": position.longitude,
+              "address": address,
+              "status": "Di dalam area"
+            }
+          });
+        }
+      } else {
+        // absen masuk
+        await colPresence.doc(todayDocID).set({
+          "date": now.toIso8601String(),
+          "masuk": {
+            "date": now.toIso8601String(),
+            "lat": position.latitude,
+            "long": position.longitude,
+            "address": address,
+            "status": "Di dalam area"
+          }
+        });
+      }
     }
   }
 
