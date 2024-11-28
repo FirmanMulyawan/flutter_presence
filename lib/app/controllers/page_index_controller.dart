@@ -84,7 +84,8 @@ class PageIndexController extends GetxController {
           "lat": position.latitude,
           "long": position.longitude,
           "address": address,
-          "status": status
+          "status": status,
+          "distance": distance
         }
       });
     } else {
@@ -106,7 +107,8 @@ class PageIndexController extends GetxController {
               "lat": position.latitude,
               "long": position.longitude,
               "address": address,
-              "status": status
+              "status": status,
+              "distance": distance
             }
           });
         }
@@ -119,7 +121,8 @@ class PageIndexController extends GetxController {
             "lat": position.latitude,
             "long": position.longitude,
             "address": address,
-            "status": status
+            "status": status,
+            "distance": distance
           }
         });
       }

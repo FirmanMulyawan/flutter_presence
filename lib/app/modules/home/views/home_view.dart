@@ -158,63 +158,99 @@ class HomeView extends GetView<HomeController> {
                       ],
                     ),
                     Gap(10),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: Material(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(20),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(20),
-                              onTap: () {
-                                Get.toNamed(Routes.detailPresensi);
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "masuk",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          DateFormat.yMMMEd()
-                                              .format(DateTime.now()),
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(DateFormat.jms()
-                                        .format(DateTime.now())),
-                                    Gap(10),
-                                    Text(
-                                      "keluar",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(DateFormat.jms()
-                                        .format(DateTime.now())),
-                                  ],
-                                ),
+                    StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                        stream: controller.streamlastPresence(),
+                        builder: (context, snapPresence) {
+                          if (snapPresence.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+
+                          if (snapPresence.data!.docs.isEmpty ||
+                              snapPresence.data?.docs == null) {
+                            return SizedBox(
+                              height: 150,
+                              child: Center(
+                                child: Text("belum ada history presensi"),
                               ),
-                            ),
-                          ),
-                        );
-                      },
-                    )
+                            );
+                          }
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: snapPresence.data?.docs.length,
+                            itemBuilder: (context, index) {
+                              Map<String, dynamic> data = snapPresence
+                                      .data?.docs.reversed
+                                      .toList()[index]
+                                      .data() ??
+                                  {};
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 20),
+                                child: Material(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: InkWell(
+                                    borderRadius: BorderRadius.circular(20),
+                                    onTap: () {
+                                      Get.toNamed(Routes.detailPresensi);
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(20),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Masuk",
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              Text(
+                                                DateFormat.yMMMEd().format(
+                                                    DateTime.parse(
+                                                        data["date"])),
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                          Text(data["masuk"]?["date"] == null
+                                              ? "-"
+                                              : DateFormat.jms().format(
+                                                  DateTime.parse(
+                                                      data["masuk"]["date"]))),
+                                          Gap(10),
+                                          Text(
+                                            "keluar",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(data["keluar"]?["date"] == null
+                                              ? "-"
+                                              : DateFormat.jms().format(
+                                                  DateTime.parse(
+                                                      data["keluar"]["date"]))),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        })
                   ],
                 );
               } else {
