@@ -32,9 +32,13 @@ class PageIndexController extends GetxController {
           String address =
               "${placemarks[0].name}, ${placemarks[0].subLocality}, ${placemarks[0].locality}";
           await updatePosition(position, address);
-
+          // cek distance between 2 position
+          // masjid
+          // -6.8950336,107.6286454
+          double distance = Geolocator.distanceBetween(
+              -6.8950336, 107.6286454, position.latitude, position.longitude);
           // presensi
-          await presensi(position, address);
+          await presensi(position, address, distance);
           Get.snackbar("Berhasil", "Kamu telah mengisi daftar hadir");
         } else {
           Get.snackbar("Error", dataResponse["message"]);
@@ -48,7 +52,8 @@ class PageIndexController extends GetxController {
     }
   }
 
-  Future<void> presensi(Position position, String address) async {
+  Future<void> presensi(
+      Position position, String address, double distance) async {
     String uid = auth.currentUser?.uid ?? '';
     CollectionReference<Map<String, dynamic>> colPresence = firestore
         .collection(AppConst.defaultRole)
@@ -60,6 +65,16 @@ class PageIndexController extends GetxController {
     DateTime now = DateTime.now();
     String todayDocID = DateFormat.yMd().format(now).replaceAll("/", "-");
 
+    String status = "Di Luar Area";
+
+    if (distance <= 200) {
+      // di dalam area
+      status = "Di Dalam Area";
+    } else {
+      // di luar area
+      status = "Di Luar Area";
+    }
+
     if (snapPresence.docs.isEmpty) {
       // belum pernah absen & set absen masuk
       await colPresence.doc(todayDocID).set({
@@ -69,7 +84,7 @@ class PageIndexController extends GetxController {
           "lat": position.latitude,
           "long": position.longitude,
           "address": address,
-          "status": "Di dalam area"
+          "status": status
         }
       });
     } else {
@@ -91,7 +106,7 @@ class PageIndexController extends GetxController {
               "lat": position.latitude,
               "long": position.longitude,
               "address": address,
-              "status": "Di dalam area"
+              "status": status
             }
           });
         }
@@ -104,7 +119,7 @@ class PageIndexController extends GetxController {
             "lat": position.latitude,
             "long": position.longitude,
             "address": address,
-            "status": "Di dalam area"
+            "status": status
           }
         });
       }
