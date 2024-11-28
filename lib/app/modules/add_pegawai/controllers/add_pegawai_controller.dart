@@ -8,6 +8,7 @@ import '../../../component/config/app_const.dart';
 
 class AddPegawaiController extends GetxController {
   TextEditingController nameC = TextEditingController();
+  TextEditingController jobC = TextEditingController();
   TextEditingController nipC = TextEditingController();
   TextEditingController emailC = TextEditingController();
   TextEditingController passwordAdminC = TextEditingController();
@@ -39,6 +40,7 @@ class AddPegawaiController extends GetxController {
           await firestore.collection(AppConst.defaultRole).doc(uid).set({
             "nip": nipC.text,
             "name": nameC.text,
+            "job": jobC.text,
             "email": emailC.text,
             "uid": uid,
             "role": AppConst.defaultRole,
@@ -79,6 +81,7 @@ class AddPegawaiController extends GetxController {
 
   Future<void> addEmployee() async {
     if (nameC.text.isNotEmpty &&
+        jobC.text.isNotEmpty &&
         nipC.text.isNotEmpty &&
         emailC.text.isNotEmpty) {
       isObscure.value = true;
