@@ -1,4 +1,4 @@
-video = 17
+video = 29
 default password = password
 default role = "employee"
 
@@ -15,5 +15,5 @@ get create controller:page_index
 
 
 # todo
-- add general value
+- add general value (done)
 - skeletonizer

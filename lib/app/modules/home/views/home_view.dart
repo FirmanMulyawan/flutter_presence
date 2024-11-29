@@ -115,28 +115,52 @@ class HomeView extends GetView<HomeController> {
                       decoration: BoxDecoration(
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(20)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Column(
-                            children: [
-                              Text("masuk"),
-                              Text("-"),
-                            ],
-                          ),
-                          Container(
-                            width: 2,
-                            height: 40,
-                            color: Colors.grey,
-                          ),
-                          Column(
-                            children: [
-                              Text("keluar"),
-                              Text("-"),
-                            ],
-                          )
-                        ],
-                      ),
+                      child:
+                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                              stream: controller.streamTodayPresence(),
+                              builder: (context, snapshotToday) {
+                                if (snapshotToday.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+
+                                Map<String, dynamic>? dataToday =
+                                    snapshotToday.data?.data();
+
+                                return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Text("masuk"),
+                                        Text(dataToday?["masuk"] == null
+                                            ? "-"
+                                            : DateFormat.jms().format(
+                                                DateTime.parse(
+                                                    "${dataToday?["masuk"]["date"]}"))),
+                                      ],
+                                    ),
+                                    Container(
+                                      width: 2,
+                                      height: 40,
+                                      color: Colors.grey,
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text("keluar"),
+                                        Text(dataToday?["keluar"] == null
+                                            ? "-"
+                                            : DateFormat.jms().format(
+                                                DateTime.parse(
+                                                    "${dataToday?["keluar"]["date"]}"))),
+                                      ],
+                                    )
+                                  ],
+                                );
+                              }),
                     ),
                     Gap(20),
                     Divider(
@@ -182,11 +206,8 @@ class HomeView extends GetView<HomeController> {
                             physics: NeverScrollableScrollPhysics(),
                             itemCount: snapPresence.data?.docs.length,
                             itemBuilder: (context, index) {
-                              Map<String, dynamic> data = snapPresence
-                                      .data?.docs.reversed
-                                      .toList()[index]
-                                      .data() ??
-                                  {};
+                              Map<String, dynamic> data =
+                                  snapPresence.data?.docs[index].data() ?? {};
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 20),
                                 child: Material(
